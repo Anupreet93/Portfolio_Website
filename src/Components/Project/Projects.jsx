@@ -12,7 +12,6 @@ const Projects = () => {
       link: "https://insta-print.vercel.app/",
       github: "https://github.com/Anupreet93/InstaPrint",
       image: "https://img.freepik.com/premium-photo/blue-white-3d-illustration-word-print-connected-computer-mouse_190619-941.jpg?w=826",
-      // Adjust cropping to display the most relevant part of the image
       objectPosition: "center top",
     },
     {
@@ -67,12 +66,15 @@ const Projects = () => {
       <motion.div 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         className="max-w-7xl mx-auto"
       >
         <motion.h2 
           className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary-light to-secondary-light dark:from-primary-dark dark:to-secondary-dark bg-clip-text text-transparent mb-12 text-center"
-          initial={{ y: 20 }}
-          animate={{ y: 0 }}
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 100 }}
+          viewport={{ once: true }}
         >
           Featured Projects
         </motion.h2>
@@ -81,63 +83,59 @@ const Projects = () => {
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl border border-gray-200 dark:border-primary-dark/20 hover:border-primary-light/40 dark:hover:border-primary-dark/40 transition-all shadow-lg hover:shadow-xl"
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.15, type: 'spring', stiffness: 120 }}
+              className="group relative bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl border border-gray-200 dark:border-gray-700/20 hover:border-primary-light/40 dark:hover:border-primary-dark/40 transition-all shadow-lg hover:shadow-2xl overflow-hidden"
             >
-              {/* Image Container - Top Half */}
-              <div className="relative h-64 bg-gray-100 dark:bg-gray-900 rounded-t-2xl overflow-hidden">
+              {/* Image */}
+              <div className="relative h-64 overflow-hidden rounded-t-2xl">
                 <img 
                   src={project.image} 
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  alt={project.title} 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   style={{ objectPosition: project.objectPosition || "center center" }}
                 />
-                {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 to-transparent" />
               </div>
 
-              {/* Content Container - Bottom Half */}
-              <div className="pt-6 pb-6 px-6">
-                <div className="flex flex-col items-center mb-4">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-2">
-                    {project.title}
-                  </h3>
-                  <div className="flex gap-2">
-                    <a 
-                      href={project.github}
-                      className="p-2 hover:bg-primary-light/20 dark:hover:bg-primary-dark/20 rounded-full transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaGithub className="w-6 h-6 text-primary-light dark:text-primary-dark" />
-                    </a>
-                    <a 
-                      href={project.link}
-                      className="p-2 hover:bg-primary-light/20 dark:hover:bg-primary-dark/20 rounded-full transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ArrowTopRightOnSquareIcon className="w-6 h-6 text-primary-light dark:text-primary-dark" />
-                    </a>
-                  </div>
-                </div>
+              {/* Content */}
+              <div className="p-6 flex flex-col items-center">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-3">{project.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4 text-center">{project.description}</p>
 
-                <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2 justify-center">
+                {/* Tech Tags */}
+                <div className="flex flex-wrap gap-2 justify-center mb-4">
                   {project.tech.map((tech) => (
-                    <motion.span 
+                    <motion.span
                       key={tech}
-                      whileHover={{ scale: 1.05 }}
-                      className="px-4 py-1.5 text-sm font-medium bg-primary-light/10 dark:bg-primary-dark/10 text-primary-light dark:text-primary-dark rounded-full backdrop-blur-sm"
+                      whileHover={{ scale: 1.1 }}
+                      className="px-4 py-1.5 text-sm font-medium bg-primary-light/10 dark:bg-primary-dark/10 text-primary-light dark:text-primary-dark rounded-full backdrop-blur-sm transition-all"
                     >
                       {tech}
                     </motion.span>
                   ))}
+                </div>
+
+                {/* Links */}
+                <div className="flex gap-4">
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 bg-white/20 dark:bg-gray-900/20 rounded-full hover:bg-primary-light/30 dark:hover:bg-primary-dark/30 transition-colors shadow-md"
+                  >
+                    <FaGithub className="w-6 h-6 text-primary-light dark:text-primary-dark" />
+                  </a>
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 bg-white/20 dark:bg-gray-900/20 rounded-full hover:bg-primary-light/30 dark:hover:bg-primary-dark/30 transition-colors shadow-md"
+                  >
+                    <ArrowTopRightOnSquareIcon className="w-6 h-6 text-primary-light dark:text-primary-dark" />
+                  </a>
                 </div>
               </div>
             </motion.div>
